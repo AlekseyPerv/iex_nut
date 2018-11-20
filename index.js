@@ -17,11 +17,28 @@ const main = async (companycode) => {
         }
     }
 
+    // Strategy double SMA сначала больше потом менбше
+    const SMA2X = (fast, slow) => {
+        SMA(fast);
+        SMA(slow);
+        smaFast = 'SMA' + fast;
+        smaSlow = 'SMA' + slow;
+        for (var i = 1; i < indexInfo.length; i++) {
+            if (indexInfo[i - 1][smaFast] < indexInfo[i -1][smaSlow] && indexInfo[i][smaFast] > indexInfo[i][smaSlow]) {
+                indexInfo[i].canBuy = true;
+            }
+            if (indexInfo[i - 1][smaFast] > indexInfo[i -1][smaSlow] && indexInfo[i][smaFast] < indexInfo[i][smaSlow]) {
+                indexInfo[i].canSell = true;
+            }
+        //if (indexInfo[i].canBuy == true) console.log(indexInfo[i].close);
+        //if (indexInfo[i].canBuy == true) console.log('b',indexInfo[i].close);
+        if (indexInfo[i].canSell == true) console.log(indexInfo[i].close);
+        //if (indexInfo[i].canSell == true) console.log('s',indexInfo[i].close);
+        }
+    }
 
-    
-    //запишем данные индикаторов в массив indexInfo
-    SMA(25);
-    SMA(5);
+    SMA2X(5,30);
+
 
 }
 main('FB')
